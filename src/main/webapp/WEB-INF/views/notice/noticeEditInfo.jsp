@@ -99,14 +99,15 @@
 <hr/>
 <br/>
 <form name="f" id="f">
-    <input type="hidden" name="nSeq" values="<%=CmmUtil.nvl(request.getParameter("nSeq")) %>"/>
+    <input type="hidden" name="nSeq" value="<%=CmmUtil.nvl(request.getParameter("nSeq")) %>"/>
     <div class="divTable minimalistBlack">
         <div class="divTableRow">
             <div class="divTableCell">제목
             </div>
             <div class="divTableCell">
-                <intput type="text" name="title" maxlength="100"
-                        style="width: 95%"/><%=CmmUtil.nvl(rDTO.getTitle()) %>
+                <input type="text" name="title" maxlength="100"
+                       value="<%=CmmUtil.nvl(rDTO.getTitle()) %>"
+                       style="width: 95%"/>
             </div>
         </div>
         <div class="divTableRow">
@@ -130,7 +131,7 @@
             </div>
             <div class="divTableCell">
                 <textarea name="contents"
-                          style="..."<%=CmmUtil.nvl(rDTO.getContents()) %></textarea>
+                          style="..."><%=CmmUtil.nvl(rDTO.getContents()) %></textarea>
             </div>
         </div>
     </div>
