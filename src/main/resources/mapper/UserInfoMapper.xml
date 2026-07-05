@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- JAVA와 연결할 Mapper 파일 설정 -->
+<mapper namespace="kopo.poly.mapper.IUserInfoMapper">
+
+    <!-- 회원 가입 전 아이디 중복체크하기 -->
+    <select id="getUserIdExists" parameterType="UserInfoDTO" resultType="UserInfoDTO">
+        SELECT
+            IF(COUNT(USER_ID) > 0, 'Y', 'N') AS EXISTS_YN
+        FROM USER_INFO
+        WHERE USER_ID = #{userId}
+    </select>
+
+    <!-- 회원 가입 전 이메일 중복체크하기 -->
+    <select id="getEmailExists" parameterType="UserInfoDTO" resultType="UserInfoDTO">
+        SELECT
+            IF(COUNT(USER_ID) > 0, 'Y', 'N') AS EXISTS_YN
+        FROM USER_INFO
+        WHERE EMAIL = #{email}
+    </select>
+
+    <insert id="insertUserInfo" parameterType="UserInfoDTO">
+        INSERT INTO USER_INFO
+        (USER_ID, USER_NAME, PASSWORD, EMAIL, ADDR1,
+        ADDR2, REG_ID, REG_DT, CHG_ID, CHG_DT)
+        VALUES(#{userId}, #{userName}, #{password}, #{email}, #{addr1},
+                #{addr2}, #{regId}, NOW(), #{chgId}, NOW())
+    </insert>
+
+    <!-- 로그인을 위해 아이디와 비밀번호가 일치하는지 확인하기 -->
+    <select id="getLogin" parameterType="UserInfoDTO" resultType="UserInfoDTO">
+        SELECT USER_ID, USER_NAME, USER_INFO.EMAIL
+        FROM USER_INFO
+        WHERE USER_ID = #{userId}
+            AND PASSWORD = #{password}
+    </select>
+
+    <!--  아이디, 비밀번호 찾기에 활용
+     1. 이름과 이메일이 맞다면, 아이디 알려주기
+     2. 아이디, 이름과 이메일이 맞다면, 비밀번호 재설정하기
+     -->
+    <select id="getUserId" parameterType="UserInfoDTO" resultType="UserInfoDTO">
+        SELECT USER_ID, USER_NAME, EMAIL
+        FROM USER_INFO
+        WHERE 1=1
+        <if test="userId neq null and userId neq '' "> <!-- 비밀번호 찾기라면, user_id 조회 추가 -->
+            AND USER_ID = #{userId}
+        </if>
+        AND USER_NAME = #{userName}
+        AND EMAIL = #{email}
+    </select>
+</mapper>
