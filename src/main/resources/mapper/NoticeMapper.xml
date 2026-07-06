@@ -21,7 +21,7 @@
             REG_ID, REG_DT, CHG_ID, CHG_DT
         )
         VALUES(
-                      (SELECT NVL(MAX(A.NOTICE_SEQ),0)+1 FROM NOTICE A),
+            (SELECT NVL(MAX(A.NOTICE_SEQ),0)+1 FROM NOTICE A),
             #{title}, #{noticeYn}, #{contents}, #{userId}, 0, #{userId}, NOW(), #{userId}, NOW()
             )
     </insert>
@@ -46,11 +46,11 @@
     <!-- 게시판 수정 쿼리 -->
     <update id="updateNoticeInfo" parameterType="NoticeDTO">
         UPDATE NOTICE SET
-                          TITLE = #{title},
-                          NOTICE_YN = #{noticeYn},
-                          CONTENTS = #{contents},
-                          CHG_ID = #{userId},
-                          CHG_DT = SYSDATE()
+            TITLE = #{title},
+            NOTICE_YN = #{noticeYn},
+            CONTENTS = #{contents},
+            CHG_ID = #{userId},
+            CHG_DT = SYSDATE()
         WHERE
             NOTICE_SEQ = #{noticeSeq}
 

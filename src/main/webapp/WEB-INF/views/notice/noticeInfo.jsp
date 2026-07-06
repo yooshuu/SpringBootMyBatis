@@ -49,8 +49,10 @@
 
             } else if (sessiono_user_id === "") {
                 alert("로그인 하시길 바랍니다.");
+
             } else {
                 alert("본인이 작성한 글만 수정 가능합니다.");
+
             }
         }
 

@@ -36,11 +36,13 @@ public class NoticeService implements INoticeService {
 
         log.info("{}.getNoticeInfo start!", this.getClass().getName());
 
+        // 상세보기 할 때마다, 조회수 증가하기 (수정보기는 제외)
         if (type) {
             log.info("Update ReadCNT");
 
             noticeMapper.updateNoticeReadCnt(pDTO);
         }
+
         return noticeMapper.getNoticeInfo(pDTO);
     }
 

@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+
 /*
  * Controller 선언해야만 Spring 프레임워크에서 Controller인지 인식 가능
  * 자바 서블릿 역할 수행
@@ -48,13 +49,13 @@ public class NoticeController {
         // 로그 찍기(추후 찍을 로그를 통해 이 함수에 접근했는지 파악하기 용이하다.)
         log.info("{}.noticeList Start!", this.getClass().getName());
 
-        // 로그인된 아이디는 Session에 저장함
+        // 로그인된 사용자 아이디는 Session에 저장함
         // 교육용으로 아직 로그인을 구현하지 않았기 때문에 Session에 데이터를 저장하지 않았음
         // 추후 로그인을 구현할 것으로 가정하고, 공지사항 리스트 출력하는 함수에서 로그인 한 것처럼 Session 값을 생성함
         session.setAttribute("SESSION_USER_ID", "USER01");
 
         // 공지사항 리스트 조회하기
-        // Java 8부터 제공되는 Optional  활용하여 NPE(Null Pointer Exception) 처리
+        // Java 8부터 제공되는 Optional 활용하여 NPE(Null Pointer Exception) 처리
         List<NoticeDTO> rList = Optional.ofNullable(noticeService.getNoticeList())
                 .orElseGet(ArrayList::new);
 
@@ -267,6 +268,7 @@ public class NoticeController {
             noticeService.updateNoticeInfo(pDTO);
 
             msg = "수정되었습니다.";
+
         } catch (Exception e) {
 
             msg = "실패하였습니다. : " + e.getMessage();
@@ -316,6 +318,7 @@ public class NoticeController {
             noticeService.deleteNoticeInfo(pDTO);
 
             msg = "삭제되었습니다.";
+
         } catch (Exception e) {
 
             msg = "실패하였습니다. : " + e.getMessage();

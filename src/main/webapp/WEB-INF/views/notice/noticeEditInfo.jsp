@@ -24,6 +24,7 @@
             })
         })
 
+        // 글자 길이 바이트 단위로 체크하기(바이트값 전달)
         function calBytes(str) {
             let tcount = 0;
             let tmpStr = String(str);
@@ -131,7 +132,7 @@
             </div>
             <div class="divTableCell">
                 <textarea name="contents"
-                          style="..."><%=CmmUtil.nvl(rDTO.getContents()) %></textarea>
+                          style="width: 95%"><%=CmmUtil.nvl(rDTO.getContents()) %></textarea>
             </div>
         </div>
     </div>

@@ -9,7 +9,7 @@ public interface INoticeService {
     /**
      * 공지사항 리스트
      *
-     * @return 조회 경과
+     * @return 조회 결과
      */
 
     List<NoticeDTO> getNoticeList() throws Exception;
@@ -19,7 +19,7 @@ public interface INoticeService {
      *
      * @param pDTO 상세내용 조회할 noticeSeq 값
      * @param type 조회수 증가여부(수정보기는 조회수 증가하지 않음)
-     * @return 조회 경과
+     * @return 조회 결과
      */
 
     NoticeDTO getNoticeInfo(NoticeDTO pDTO, boolean type) throws Exception;

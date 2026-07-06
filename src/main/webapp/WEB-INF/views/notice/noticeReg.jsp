@@ -100,7 +100,7 @@
                 <div class="divTableCell">제목
                 </div>
                 <div class="divTableCell">
-                    <input type="text" name="title" maxlength="100" style="..."/>
+                    <input type="text" name="title" maxlength="100" style="width: 95%"/>
                 </div>
             </div>
             <div class="divTableRow">
