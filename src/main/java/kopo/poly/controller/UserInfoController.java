@@ -104,11 +104,11 @@ public class UserInfoController {
         try {
 
             /*
-             * ####################################################
+             * ######################################################################
              *     웹(회원정보 입력화면)에서 받는 정보를 String 변수에 저장 시작!!
              *
              *   무조건 웹으로 받은 정보는 DTO에 저장하기 위해 임시로 String 변수에 저장함
-             * ####################################################
+             * ######################################################################
              */
             String userId = CmmUtil.nvl(request.getParameter("userId")); // 아이디
             String userName = CmmUtil.nvl(request.getParameter("userName")); // 이름
@@ -117,11 +117,11 @@ public class UserInfoController {
             String addr1 = CmmUtil.nvl(request.getParameter("addr1")); // 주소
             String addr2 = CmmUtil.nvl(request.getParameter("addr2")); // 상세주소
             /*
-             * ####################################################
+             * ######################################################################
              *     웹(회원정보 입력화면)에서 받는 정보를 String 변수에 저장 끝!!
              *
              *   무조건 웹으로 받은 정보는 DTO에 저장하기 위해 임시로 String 변수에 저장함
-             * ####################################################
+             * ######################################################################
              */
 
             /*
@@ -160,11 +160,11 @@ public class UserInfoController {
             pDTO.setAddr2(addr2);
 
             /*
-             * ####################################################
+             * ###############################################################
              *     웹(회원정보 입력화면)에서 받는 정보를 DTO에 저장하기 끝!!
              *
              *     무조건 웹으로 받은 정보는 DTO에 저장해야 한다고 이해하길 권함
-             * ####################################################
+             * ###############################################################
              */
 
             /*
@@ -365,5 +365,148 @@ public class UserInfoController {
         log.info("{}.searchUserIdProc End!", this.getClass().getName());
 
         return "user/searchUserIdResult";
+    }
+
+    /**
+     * 비밀번호 찾기 화면
+     */
+    @GetMapping(value = "searchPassword")
+    public String searchPassword(HttpSession session) {
+        log.info("{}.searchPassword Start!", this.getClass().getName());
+
+        // 강제 URL 입력 등 오는 경우가 있어 세션 삭제
+        // 비밀번호 재생성하는 화면은 보안을 위해 생성한 NEW_PASSWORD 세션 삭제
+        session.setAttribute("NEW_PASSWORD","");
+        session.removeAttribute("NEW_PASSWORD");
+
+        log.info("{}.searchPassword End!", this.getClass().getName());
+
+        return "user/searchPassword";
+
+    }
+
+    /**
+     * 비밀번호 찾기 로직 수행
+     * <p>
+     * 아이디, 이름, 이메일 일치하면, 비밀번호 재발급 화면 이동
+     */
+    @PostMapping(value = "searchPasswordProc")
+    public String searchPassword(HttpServletRequest request, ModelMap model, HttpSession session) throws Exception {
+        log.info("{}.searchPasswordProc Start!", this.getClass().getName());
+
+        /*
+         * #####################################################################
+         *     웹(회원정보 입력화면)에서 받는 정보를 String 변수에 저장!!
+         *
+         *   무조건 웹으로 받은 정보는 DTO에 저장하기 위해 임시로 String 변수에 저장함
+         * #####################################################################
+         */
+
+        String userId = CmmUtil.nvl(request.getParameter("userId")); // 아이디
+        String userName = CmmUtil.nvl(request.getParameter("userName")); // 이름
+        String email = CmmUtil.nvl(request.getParameter("email")); // 이메일
+
+        /*
+         * #####################################################################
+         *   반드시, 값을 받았으면, 꼭 로그를 찍어서 값이 제대로 들어오는지 파악해야함
+         *                      반드시 작성할 것
+         * #####################################################################
+         */
+        log.info("userId : {} / userName : {} / email : {}", userId, userName, email);
+
+        /*
+         * ###############################################################
+         *     웹(회원정보 입력화면)에서 받는 정보를 DTO에 저장하기 끝!!
+         *
+         *     무조건 웹으로 받은 정보는 DTO에 저장해야 한다고 이해하길 권함
+         * ###############################################################
+         */
+
+        UserInfoDTO pDTO = new UserInfoDTO();
+        pDTO.setUserId(userId);
+        pDTO.setUserName(userName);
+        pDTO.setEmail(EncryptUtil.encAES128CBC(email));
+
+        // 비밀번호 찾기 가능한지 확인하기
+        UserInfoDTO rDTO = Optional.ofNullable(userInfoService.searchUserIdOrPasswordProc(pDTO)).orElseGet(UserInfoDTO::new);
+
+        model.addAttribute("rDTO", rDTO);
+
+        // 비밃번호 재생성하는 화면은 보안을 위해 반드시 NEW_PASSWORD 세션이 존재해야 접속 가능하도록 구현
+        // userId 값을 넣은 이유는 비밀번호 재설정하는 newPasswordProc 함수에서 사용하기 위함
+        session.setAttribute("NEW_PASSWORD", userId);
+
+        log.info("{}.searchPasswordProc End!", this.getClass().getName());
+
+        return "user/newPassword";
+
+    }
+
+    /**
+     * 비밀번호 찾기 로직 수행
+     * <p>
+     * 아이디, 이름, 이메일 일치하면, 비밀번호 재발급 화면 이동
+     */
+    @PostMapping(value = "newPasswordProc")
+    public String newPasswordProc(HttpServletRequest request, ModelMap model, HttpSession session) throws Exception {
+
+        log.info("{}.user/newPasswordProc Start!", this.getClass().getName());
+
+        String msg; // 웹에 보여줄 메시지
+
+        // 정상적인 접근인지 체크
+        String newPassword = CmmUtil.nvl((String) session.getAttribute("NEW_PASSWORD"));
+
+        if (!newPassword.isEmpty()) { // 정상 접근
+
+            /*
+             * ######################################################################
+             *     웹(회원정보 입력화면)에서 받는 정보를 String 변수에 저장 시작!!
+             *
+             *   무조건 웹으로 받은 정보는 DTO에 저장하기 위해 임시로 String 변수에 저장함
+             * ######################################################################
+             */
+
+            String password = CmmUtil.nvl(request.getParameter("password")); // 신규 비밀번호
+
+            /*
+             * #####################################################################
+             *   반드시, 값을 받았으면, 꼭 로그를 찍어서 값이 제대로 들어오는지 파악해야함
+             *                      반드시 작성할 것
+             * #####################################################################
+             */
+
+            log.info("password : {}", password);
+
+            /*
+             * ###############################################################
+             *     웹(회원정보 입력화면)에서 받는 정보를 DTO에 저장하기 끝!!
+             *
+             *     무조건 웹으로 받은 정보는 DTO에 저장해야 한다고 이해하길 권함
+             * ###############################################################
+             */
+
+            UserInfoDTO pDTO = new UserInfoDTO();
+            pDTO.setUserId(newPassword);
+            pDTO.setPassword(EncryptUtil.encHashSHA256(password));
+
+            userInfoService.newPasswordProc(pDTO);
+
+            // 비밀번호 재생성하는 화면은 보안을 위해 생성한 NEW_PASSWORD 세션 삭제
+            session.setAttribute("NEW_PASSWORD", "");
+            session.removeAttribute("NEW_PASSWORD");
+
+            msg = "비밀번호가 재설정되었습니다.";
+
+        } else { // 비정상 접급
+            msg = "비정상 접근입니다.";
+        }
+
+        model.addAttribute("msg", msg);
+
+        log.info("{}.user/newPasswordProc End!", this.getClass().getName());
+
+        return "user/newPasswordResult";
+
     }
 }
