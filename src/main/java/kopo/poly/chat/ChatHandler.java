@@ -61,7 +61,7 @@ public class ChatHandler extends TextWebSocketHandler {
                     ChatDTO cDTO = new ChatDTO();
                     cDTO.setName("관리자");
                     cDTO.setMsg(userName + "님이 " + roomName + " 채팅방에 입장하셨습니다.");
-                    cDTO.setDate(DateUtil.getDateTime("yyyyMMdd hh:mm:ss"));
+                    cDTO.setDate(DateUtil.getDateTime("yyyy-MM-dd HH:mm:ss"));
 
                     String json = new ObjectMapper().writeValueAsString(cDTO);
                     log.info("json: " + json);
@@ -125,7 +125,7 @@ public class ChatHandler extends TextWebSocketHandler {
                     ChatDTO cDTO = new ChatDTO();
                     cDTO.setName("관리자");
                     cDTO.setMsg(userName + "님이 " + roomName + " 채팅방에 퇴장하셨습니다.");
-                    cDTO.setDate(DateUtil.getDateTime("yyyy-MM-dd hh:mm:ss"));
+                    cDTO.setDate(DateUtil.getDateTime("yyyy-MM-dd HH:mm:ss"));
 
                     String json = new ObjectMapper().writeValueAsString(cDTO);
                     log.info("json : " + json);
