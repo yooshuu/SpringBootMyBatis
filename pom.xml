@@ -120,6 +120,13 @@
             <version>3.10.8</version>
         </dependency>
 
+        <!-- OCR 구현을 위한 Tesseract 라이브러리 다운로드 -->
+        <dependency>
+            <groupId>net.sourceforge.tess4j</groupId>
+            <artifactId>tess4j</artifactId>
+            <version>5.2.1</version>
+        </dependency>
+
     </dependencies>
 
     <build>
