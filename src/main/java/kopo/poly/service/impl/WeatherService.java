@@ -10,6 +10,7 @@ import kopo.poly.util.NetworkUtil;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedHashMap;
@@ -24,6 +25,9 @@ public class WeatherService implements IWeatherService {
     @Value("${weather.api.key}")
     private String apiKey;
 
+    @Cacheable(cacheNames = "weather",
+            keyGenerator = "latLonKeyGen",
+            sync = true)
     @Override
     public WeatherDTO getWeather(WeatherDTO pDTO) throws Exception {
 

@@ -5,6 +5,8 @@ import kopo.poly.mapper.INoticeMapper;
 import kopo.poly.service.INoticeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,7 +22,11 @@ public class NoticeService implements INoticeService {
     // 예전에는 autowired 어노테이션을 통해 설정했었지만, 이젠 생성자를 통해 객체 주입함
     private final INoticeMapper noticeMapper;
 
-
+    @Cacheable(
+            cacheNames = "notice:list",
+            keyGenerator = "noticeList",
+            sync = true
+    )
     @Override
     public List<NoticeDTO> getNoticeList() throws Exception {
 
@@ -29,6 +35,7 @@ public class NoticeService implements INoticeService {
         return noticeMapper.getNoticeList();
 
     }
+
 
     @Transactional
     @Override
@@ -46,6 +53,13 @@ public class NoticeService implements INoticeService {
         return noticeMapper.getNoticeInfo(pDTO);
     }
 
+    /**
+     * 공지 등록
+     * <p>
+     * 캐시 무효화
+     * - 등록 후 목록이 변경되므로 "notice:list" 캐시의 모든 엔트리를 제거한다.
+     */
+    @CacheEvict(cacheNames = "notice:list", allEntries = true)
     @Transactional
     @Override
     public void insertNoticeInfo(NoticeDTO pDTO) throws Exception {
@@ -55,6 +69,13 @@ public class NoticeService implements INoticeService {
         noticeMapper.insertNoticeInfo(pDTO);
     }
 
+    /**
+     * 공지 수정
+     * <p>
+     * 캐시 무효화
+     * - 수정 후 정렬, 상위 노출, 요약 등 목록 표시가 달라질 수 있으므로 목록 캐시를 비운다.
+     */
+    @CacheEvict(cacheNames = "notice:list", allEntries = true)
     @Transactional
     @Override
     public void updateNoticeInfo(NoticeDTO pDTO) throws Exception {
@@ -65,6 +86,13 @@ public class NoticeService implements INoticeService {
 
     }
 
+    /**
+     * 공지 삭제
+     * <p>
+     * 캐시 무효화
+     * - 삭제 후 목록이 변경되므로 목록 캐시를 비운다.
+     */
+    @CacheEvict(cacheNames = "notice:list", allEntries = true)
     @Transactional
     @Override
     public void deleteNoticeInfo(NoticeDTO pDTO) throws Exception {

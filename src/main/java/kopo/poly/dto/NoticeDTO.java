@@ -3,6 +3,8 @@ package kopo.poly.dto;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
+
 /**
  * Lombok은 코딩을 줄이기 위해 @어노테이션을 통한 자동 코드 완성기능임
  *
@@ -11,7 +13,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class NoticeDTO {
+public class NoticeDTO implements Serializable {
 
     private String noticeSeq; // 기본키, 순번
 

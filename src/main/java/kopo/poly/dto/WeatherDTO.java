@@ -4,13 +4,14 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.List;
 
 
 @Setter
 @Getter
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
-public class WeatherDTO {
+public class WeatherDTO implements Serializable {
 
     private String lat; // 위도
 
