@@ -1,0 +1,24 @@
+.newsCard {
+    max-width: 720px;
+    margin: 40px auto;
+    padding: 0 20px;
+    font-family: -apple-system, "Malgun Gothic", sans-serif;
+}
+
+.newsName {
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 1.4;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid #000;
+}
+
+.newsContent {
+    font-size: 16px;
+    line-height: 1.9;
+    color: #333;
+    word-break: keep-all;
+    white-space: pre-line;
+    margin-top: 20px;
+}
