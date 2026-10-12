@@ -22,6 +22,11 @@ public class MailService implements IMailService {
     @Value("${spring.mail.username}")
     private String fromMail;
 
+//    @RequiredArgsConstructor 안쓰면 직접 주입해야함
+//    public MailService(JavaMailSender mailSender) {
+//        this.mailSender = mailSender;
+//    }
+
     @Override
     public int doSendMail(MailDTO pDTO) {
 
