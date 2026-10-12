@@ -49,7 +49,7 @@
     </script>
 </head>
 <body>
-<h2>이미지 파일로부터 인</h2>
+<h2>이미지 파일로부터 인식된 문자열 읽어주기</h2>
 <hr/>
 <br/>
 <div class="divTable minimalistBlack">
