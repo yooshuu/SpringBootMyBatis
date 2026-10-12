@@ -5,7 +5,6 @@ import kopo.poly.util.CmmUtil;
 import kopo.poly.util.EncryptUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
@@ -25,7 +24,6 @@ import java.util.Map;
 public class WebSocketConfig implements WebSocketConfigurer {
 
     private final ChatHandler chatHandler;
-    private final DefaultErrorAttributes defaultErrorAttributes;
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
