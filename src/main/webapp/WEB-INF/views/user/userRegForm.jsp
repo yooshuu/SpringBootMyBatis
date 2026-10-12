@@ -225,7 +225,7 @@
                 <div class="divTableCell">* 아이디
                 </div>
                 <div class="divTableCell">
-                    <input tpe="text" name="userId" style="width:80%" placeholder="아이디"/>
+                    <input type="text" name="userId" style="width:80%" placeholder="아이디"/>
                     <button id="btnUserId" type="button">아이디 중복체크</button>
                 </div>
             </div>
